@@ -23,12 +23,7 @@ from cars.views import carview
 from cars.views import rateview
 from cars.views import popularview
 
-# urlpatterns = [
-#      path('admin/', admin.site.urls),
-#      path('hello', include('cars.urls')),
-#      path('cars/', include('cars.urls')),
-#      path('rate/', include('cars.urls')),
-# ]
+
 
 
 urlpatterns = [
