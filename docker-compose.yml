@@ -9,10 +9,10 @@ services:
       - POSTGRES_PASSWORD=postgres
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:PORT
+    command: python manage.py runserver 0.0.0.0:$PORT
     volumes:
       - .:/app
     ports:
-      - "PORT:PORT"
+      - "$PORT:$PORT"
     depends_on:
       - db
