@@ -14,19 +14,27 @@ class CarsDbFacade:
         if len(found_cars) == 0:
             list_of_cars.append(car)
 
+        TheCar.objects.update_or_create(make=car.make, model=car.model)
+
+
     def get_all_cars(self):
         """Get all cars from db.
         """
-        return list_of_cars
+
+        all_cars = TheCar.objects.all()
+
+        return all_cars
 
     def rate_car(self, make, model, rate):
         """Add new rate to specified car.
         """
 
-        found_cars = [c for c in list_of_cars if c.make.upper() == make.upper() and c.model.upper() == model.upper()]
-        
-        if len(found_cars) > 0:
-            found_car = found_cars[0]
+        try:
+            found_car = TheCar.objects.get(make=make.upper(), model=model)
+        except:
+            return False
+        else:
+            found_car.rates += 1
 
             if rate == 1:
                 found_car.rate1 = int(found_car.rate1) + 1 if found_car.rate1 is not None else 1
@@ -38,20 +46,17 @@ class CarsDbFacade:
                 found_car.rate4 = int(found_car.rate4) + 1 if found_car.rate1 is not None else 1
             elif rate == 5:
                 found_car.rate5 = int(found_car.rate5) + 1 if found_car.rate1 is not None else 1
-            
-            found_car.rates += 1
+
+            found_car.save()
 
             return True
 
-        else:
-            return False
-        
 
     def get_most_popular_car(self, car_number):
         """Get the car which has the most rates.
         """
-        
-        most_popular_cars = sorted(list_of_cars, key=lambda c: c.rates, reverse=True)[:int(car_number)]        
+
+        all_cars = TheCar.objects.all()
+        most_popular_cars = sorted(all_cars, key=lambda c: c.rates, reverse=True)[:int(car_number)]
 
         return most_popular_cars
-
