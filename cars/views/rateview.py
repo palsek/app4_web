@@ -20,6 +20,7 @@ from cars.facades import CarsDbFacade
 class rate(APIView):
 
     def get(self, request, format=None):
+        print("rate / get")
 
         error_detail = 'Error during call external service'
         return Response(error_detail, status=status.HTTP_404_NOT_FOUND)
