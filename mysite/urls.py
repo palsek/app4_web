@@ -23,14 +23,9 @@ from cars.views import carview
 from cars.views import rateview
 from cars.views import popularview
 
-
-
-
 urlpatterns = [
-    #url('', csrf_exempt(carview.cars.as_view()), name='cars'),
-    #url('/favicon.ico', csrf_exempt(carview.cars.as_view()), name='cars'),
     url('cars', csrf_exempt(carview.cars.as_view()), name='cars'),
-    url('rate', csrf_exempt(rateview.rate.as_view()), name='rate'), # popular
+    url('rate', csrf_exempt(rateview.rate.as_view()), name='rate'),
     url('popular/(?P<number>\w+)', csrf_exempt(popularview.popular.as_view()), name='popular'),
     url('popular', csrf_exempt(popularview.popular.as_view()), name='popular'),
     

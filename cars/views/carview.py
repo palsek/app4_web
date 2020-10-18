@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+#from django.shortcuts import render
+#from django.http import HttpResponse
 
 from rest_framework import status
 from rest_framework import serializers
@@ -8,19 +8,20 @@ from rest_framework.response import Response
 from rest_framework import authentication, permissions
 
 import requests
-#import json
-import json # loads str --> json; dumps json --> str
+import json
 
 from cars.models import *
 from cars.serializers import TheCarSerializer
 from cars.facades import CarsDbFacade
-
+from cars.setup import CARS_SERVICE_URL
 
 
 class cars(APIView):
 
     def get(self, request, format=None):
-        print('cars / get')
+        """"Get all cars from local db
+        """
+
         cars_db = CarsDbFacade()
         all_cars = cars_db.get_all_cars()
 
@@ -29,6 +30,8 @@ class cars(APIView):
         
 
     def post(self, request, format=None):
+        """Search car in external service and adds it to local db
+        """
 
         try:
             wanted_car_make = request.data['car_make']
@@ -42,12 +45,13 @@ class cars(APIView):
                     }                
                 }
             return Response(content, status=status.HTTP_404_NOT_FOUND)
-
-        URL = r'https://vpic.nhtsa.dot.gov/api/vehicles/getmodelsformake/{0}?format=json'.format(wanted_car_make)
+        
+        # prepare url to external car service
+        car_service_url = CARS_SERVICE_URL + wanted_car_make + r'?format=json'
 
         try:
             # call external service
-            response = requests.get(URL)
+            response = requests.get(car_service_url)
         except requests.exceptions.Timeout:
             error_detail = "Timeout exception raised during external service call"
             return Response(error_detail, status=status.HTTP_404_NOT_FOUND)
@@ -56,7 +60,6 @@ class cars(APIView):
             return Response(error_detail, status=status.HTTP_404_NOT_FOUND)
         
         if response.status_code == 200:
-            print("response == 200")
             response_data = json.loads(response.content)
 
             response_data_results = response_data['Results']

@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+#from django.shortcuts import render
+#from django.http import HttpResponse
 
 from rest_framework import status
 from rest_framework import serializers
@@ -8,27 +8,26 @@ from rest_framework.response import Response
 from rest_framework import authentication, permissions
 
 import requests
-#import json
-import json # loads str --> json; dumps json --> str
+import json
 
 from cars.models import *
 from cars.serializers import TheCarSerializer
 from cars.facades import CarsDbFacade
-# Create your views here.
 
 
 class rate(APIView):
 
     def get(self, request, format=None):
-        print("rate / get")
+        """Return error because this operation is forbidden
+        """
 
-        error_detail = 'Error during call external service'
+        error_detail = 'This method is unsupported'
         return Response(error_detail, status=status.HTTP_404_NOT_FOUND)
 
 
     def post(self, request, format=None):
-        '''Add a rate for a car from 1 to 5
-        '''
+        """Add a rate for a car from 1 to 5
+        """
 
         try:
             wanted_car_make = request.data['car_make']

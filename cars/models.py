@@ -15,9 +15,6 @@ class TheCar(models.Model):
     rate4 = models.IntegerField(default=0)
     rate5 = models.IntegerField(default=0)
     rates = models.IntegerField(default=0)
-    #owner = models.ForeignKey("Driver", on_delete=models.SET_NULL, null=True)
-
-    #fake = models.TextField()
 
     def __str__(self):
         return self.model

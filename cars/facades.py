@@ -1,22 +1,27 @@
-# temporary virtual table which simulate data bases
-
 from .models import TheCar
 
+# temporary virtual table which simulate data bases
 list_of_cars = []
-
 
 class CarsDbFacade:
 
     def add_car(self, car):
+        """Add new car to db if already does not exists.
+        """
+
         found_cars = [c for c in list_of_cars if c.make.upper() == car.make.upper() and c.model.upper() == car.model.upper()]
         
         if len(found_cars) == 0:
             list_of_cars.append(car)
 
     def get_all_cars(self):
+        """Get all cars from db.
+        """
         return list_of_cars
 
     def rate_car(self, make, model, rate):
+        """Add new rate to specified car.
+        """
 
         found_cars = [c for c in list_of_cars if c.make.upper() == make.upper() and c.model.upper() == model.upper()]
         
@@ -43,6 +48,8 @@ class CarsDbFacade:
         
 
     def get_most_popular_car(self, car_number):
+        """Get the car which has the most rates.
+        """
         
         most_popular_cars = sorted(list_of_cars, key=lambda c: c.rates, reverse=True)[:int(car_number)]        
 
