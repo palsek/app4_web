@@ -1,7 +1,7 @@
-from django.test import TestCase, SimpleTestCase
+from django.test import TestCase
 
 
-class CarviewTest(SimpleTestCase):
+class CarviewTest(TestCase):
 
     def test_get_cars_status_code_200(self):
         response = self.client.get('/cars')
@@ -24,7 +24,7 @@ class CarviewTest(SimpleTestCase):
         self.assertEquals(response.data, expected)
 
 
-class RateviewTest(SimpleTestCase):
+class RateviewTest(TestCase):
     
     def test_get_rate_status_code_404(self):
         response = self.client.get('/rate')
@@ -36,7 +36,7 @@ class RateviewTest(SimpleTestCase):
 
         self.assertEquals(response.data, "Error during rating, probably no such car exists")
 
-class PopularviewTest(SimpleTestCase):
+class PopularviewTest(TestCase):
     
     def test_get_popular_status_code_200(self):
         response = self.client.get('/popular')

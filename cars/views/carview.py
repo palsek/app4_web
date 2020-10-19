@@ -1,6 +1,3 @@
-#from django.shortcuts import render
-#from django.http import HttpResponse
-
 from rest_framework import status
 from rest_framework import serializers
 from rest_framework.views import APIView
@@ -26,6 +23,11 @@ class cars(APIView):
         all_cars = cars_db.get_all_cars()
 
         serializer = TheCarSerializer(all_cars, many=True)
+
+        # prepare average rate for each car
+        for car in serializer.data:
+            car['average_rate'] = (car['rate1'] * 1 + car['rate2'] * 2 + car['rate3'] * 3 + car['rate4'] * 4 + car['rate5'] * 5) / car['rates']
+
         return Response(serializer.data)
         
 
